@@ -4,8 +4,6 @@ title: SHKeeper Documentation
 sidebar_label: Introduction
 ---
 
-> This is a temporary placeholder page. Replace with real documentation when ready.
-
 Welcome to **SHKeeper** — an open-source cryptocurrency payment processor.  
 It allows merchants and developers to **accept crypto payments directly** into their own wallets, without intermediaries.  
 SHKeeper is designed to be **self-hosted, secure, and flexible**, giving you full control over your funds.

@@ -3,7 +3,24 @@
 title: Helm Chart
 ---
 
-_Placeholder for **`deployment/helm-chart`**._
+# ⛵ Helm Chart
 
-This page is a stub generated to satisfy the sidebar.
-Replace it with real content.
+## 🧠 Overview
+
+A Helm chart is a package that defines, installs, and manages Kubernetes applications. It allows you to describe the structure of your application, its services, deployments, configurations, and dependencies in a reusable and versioned format. Helm charts simplify deploying complex applications consistently across environments.
+
+---
+
+## 🔧 Key Concepts
+
+- **Chart:** A collection of files that describe a related set of Kubernetes resources.  
+- **Release:** A specific deployment of a chart in a Kubernetes cluster.  
+- **Values:** Configuration parameters that can be customized per deployment.  
+- **Templates:** Kubernetes manifests that are parameterized with values from the chart.  
+- **Dependencies:** Other charts or services required for your application to function.
+
+---
+
+## 📄 Structure of a Helm Chart
+
+A typical Helm chart has the following structure:
