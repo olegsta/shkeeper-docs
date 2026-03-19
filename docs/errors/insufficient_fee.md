@@ -1,4 +1,4 @@
-# `insufficient fee`
+# `Insufficient fee`
 
 ## Overview
 

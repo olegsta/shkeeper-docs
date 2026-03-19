@@ -20,7 +20,3 @@ A Helm chart is a package that defines, installs, and manages Kubernetes applica
 - **Dependencies:** Other charts or services required for your application to function.
 
 ---
-
-## 📄 Structure of a Helm Chart
-
-A typical Helm chart has the following structure:

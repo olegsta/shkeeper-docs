@@ -1,4 +1,4 @@
-# `bad-txns-inputs-missingorspent`
+# `Bad-txns-inputs-missingorspent`
 
 ## Overview
 

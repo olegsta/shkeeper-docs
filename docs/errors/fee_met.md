@@ -1,5 +1,5 @@
 ---
-title: Errors
+title: Fee met
 slug: /fee met
 ---
 # Bitcoin Error: `fee not met`

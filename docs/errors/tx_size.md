@@ -1,4 +1,4 @@
-# `tx-size`
+# `Tx-size`
 
 ## Overview
 

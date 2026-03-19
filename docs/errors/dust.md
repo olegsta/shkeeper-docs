@@ -1,4 +1,4 @@
-# `dust`
+# `Dust`
 
 ## Overview
 
