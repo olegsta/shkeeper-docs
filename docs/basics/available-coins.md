@@ -3,10 +3,30 @@ sidebar_position: 2
 title: Available Coins
 ---
 
-_Available Cryptocurrencies for **`basics/available-coins`**._
+## Available Cryptocurrencies
 
-## Available crypto example
-This page is a stub generated to satisfy the sidebar.
+SHKeeper supports a wide range of cryptocurrencies, allowing businesses to accept payments directly in popular assets without intermediaries or third‑party fees. SHKeeper’s multi‑currency support makes it suitable for global e‑commerce, SaaS, and custom applications. :contentReference{index=0}
 
-## Some other subtopic
-Replace it with real content.
+### Supported Coins & Tokens
+
+SHKeeper currently offers direct payment support for the following assets: :contentReference{index=1}
+
+- **Bitcoin (BTC)**  
+- **Ethereum (ETH)**  
+- **Litecoin (LTC)**  
+- **Dogecoin (DOGE)**  
+- **Monero (XMR)**  
+- **Ripple (XRP)**  
+- **TRON (TRX)**  
+- **Binance Coin (BNB)**  
+- **Polygon (MATIC)**  
+- **Avalanche (AVAX)**  
+- **Firo (FIRO)**  
+- **USDT** (ERC20, TRC20, BEP‑20, Polygon, Avalanche)  
+- **USDC** (ERC20, TRC20, BEP‑20, Polygon, Avalanche) :contentReference{index=2}
+
+### More Cryptocurrencies Coming
+
+SHKeeper’s ecosystem continues to grow, and additional coins and tokens may be added over time. :contentReference{index=3}
+
+By supporting many major blockchains and token standards, SHKeeper gives merchants flexibility to accept crypto payments from a broad audience without complex external integrations or fees. :contentReference{index=4}

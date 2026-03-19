@@ -1,52 +1,590 @@
 {
+  "info": {
+    "description": "# Introduction\nSHKeeper - is an open-source, self-hosted cryptocurrency payment processor. It uniquely serves as both a gateway and a merchant, enabling you to accept payments in various cryptocurrencies without fees and intermediaries.\n\n# Authentication\nYou can authenticate either via Basic Auth or an API key depending from endpoint requirement. You can generate or view an API key in the SHKeeper UI under `Wallets` -> `Manage` -> `API key`. For metrics endpoints, use `METRICS_USERNAME` and `METRICS_PASSWORD`.\n\n<!-- Redoc-Inject: <security-definitions> -->\n",
+    "contact": {
+      "email": "support@shkeeper.io",
+      "url": "https://shkeeper.io"
+    },
+    "x-logo": {
+      "url": "https://shkeeper.io/images/shkeeper-logo.svg",
+      "altText": "SHKeeper logo"
+    },
+    "license": {
+      "name": "GPL-3.0",
+      "url": "https://github.com/vsys-host/shkeeper.io"
+    },
+    "title": "SHKeeper API",
+    "version": "2.3.5"
+  },
+  "servers": [
+    {
+      "url": "https://demo.shkeeper.io"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Cryptos",
+      "x-displayName": "Available crypto",
+      "description": "Crypto currency operations"
+    },
+    {
+      "name": "Invoices",
+      "x-displayName": "Invoices",
+      "description": "Invoices operations"
+    },
+    {
+      "name": "Payouts",
+      "x-displayName": "Payouts",
+      "description": "Payouts operations"
+    },
+    {
+      "name": "Payments",
+      "x-displayName": "Payments",
+      "description": "Payments operations"
+    },
+    {
+      "name": "Metrics",
+      "x-displayName": "Metrics",
+      "description": "Metrics operations"
+    },
+    {
+      "name": "Transactions",
+      "x-displayName": "Transactions",
+      "description": "Transaction operations"
+    },
+    {
+      "name": "Encryption",
+      "x-displayName": "Wallet encryption",
+      "description": "Wallet encryption operations"
+    },
+    {
+      "name": "Notifications",
+      "x-displayName": "Wallet notifications",
+      "description": "Wallet notifications operations"
+    },
+    {
+      "name": "Other",
+      "x-displayName": "Useful endpoints",
+      "description": "Other operations"
+    }
+  ],
+  "x-tagGroups": [
+    {
+      "name": "Obtain crypto address",
+      "tags": [
+        "Cryptos",
+        "Invoices"
+      ]
+    },
+    {
+      "name": "Payouts",
+      "tags": [
+        "Payouts"
+      ]
+    },
+    {
+      "name": "Payments",
+      "tags": [
+        "Payments"
+      ]
+    },
+    {
+      "name": "Transactions",
+      "tags": [
+        "Transactions"
+      ]
+    },
+    {
+      "name": "Security",
+      "tags": [
+        "Encryption"
+      ]
+    },
+    {
+      "name": "Other",
+      "tags": [
+        "Other",
+        "Metrics",
+        "Notifications"
+      ]
+    }
+  ],
   "paths": {
-    "/api/v1/crypto": {
+    "/": {
       "get": {
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CryptoListResponse"
-                }
-              }
-            }
-          },
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
           }
         },
-        "summary": "List available cryptocurrencies (filtered by enabled and sync status).",
         "tags": [
-          "crypto"
+          "wallet"
+        ]
+      }
+    },
+    "/wallets": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      }
+    },
+    "/{crypto_name}/get-rate/{fiat}": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "fiat",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        {
+          "in": "path",
+          "name": "crypto_name",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      ]
+    },
+    "/{crypto_name}/get-rate": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "crypto_name",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      ]
+    },
+    "/payout/{crypto_name}": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "crypto_name",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      ]
+    },
+    "/wallet/{crypto_name}": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "crypto_name",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      ]
+    },
+    "/rates/{fiat}": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "fiat",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      ],
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      }
+    },
+    "/rates": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      },
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      }
+    },
+    "/transactions": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      }
+    },
+    "/settings": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "summary": "User settings page including 2FA management",
+        "tags": [
+          "wallet"
+        ]
+      }
+    },
+    "/parts/transactions": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      }
+    },
+    "/payouts": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      }
+    },
+    "/parts/payouts": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      }
+    },
+    "/parts/tron-multiserver": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      },
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      }
+    },
+    "/configure/tron": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      },
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      }
+    },
+    "/parts/tron-staking-stake": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      },
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      }
+    },
+    "/metrics": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
+          "200": {
+            "description": "Success \u2013 metrics retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetricsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized \u2013 invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "msg": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Metrics"
+        ],
+        "description": "Retrieve system and cryptocurrency metrics.\n\nAuthorization: HTTP Basic Auth using metric credentials. Metric credentials can be set via environment variables: METRICS_USERNAME, METRICS_PASSWORD. Default username/password: shkeeper/shkeeper.",
+        "security": [
+          {
+            "Basic_Metrics": []
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl --location --request GET 'https://demo.shkeeper.io/metrics' \\\n--header 'Authorization: Basic c2hrZWVwZXI6c2hrZacvb3Q='\n"
+          }
+        ]
+      }
+    },
+    "/unlock": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      },
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "wallet"
+        ]
+      }
+    },
+    "/api/v1/crypto": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
+          "200": {
+            "description": "Success \u2013 available cryptocurrencies retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCryptoResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Cryptos"
+        ],
+        "description": "Retrieve the list of available cryptocurrencies.\n\nUse `crypto_list` for integrations. The `crypto` field is kept only for backward compatibility.",
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl --location --request GET 'https://demo.shkeeper.io/api/v1/crypto'\n"
+          }
+        ]
+      }
+    },
+    "/api/v1/crypto/balances": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
+          "200": {
+            "description": "Success \u2013 balances retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalancesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error \u2013 invalid includes or no valid cryptos requested",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalancesError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Cryptos"
+        ],
+        "description": "Retrieve balances for all enabled cryptos, or for a subset specified via query parameter 'includes'.",
+        "security": [
+          {
+            "API_Key": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "includes",
+            "in": "query",
+            "required": false,
+            "description": "Comma-separated list of crypto identifiers (e.g., BTC,ETH,TRX)",
+            "schema": {
+              "type": "string",
+              "example": "BTC,ETH"
+            }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl --location --request GET 'https://demo.shkeeper.io/api/v1/crypto/balances?includes=BTC,ETH' \\\n--header 'X-Shkeeper-API-Key: YOUR_API_KEY'\n"
+          }
         ]
       }
     },
     "/api/v1/{crypto_name}/generate-address": {
       "get": {
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenerateAddressResponse"
-                }
-              }
-            }
-          },
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
           }
         },
         "tags": [
           "api_v1"
-        ],
-        "security": [
-          {
-            "BasicAuth": []
-          }
         ]
       },
       "parameters": [
@@ -64,8 +602,11 @@
     "/api/v1/{crypto_name}/payment_request": {
       "post": {
         "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
           "200": {
-            "description": "OK",
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
@@ -75,22 +616,25 @@
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error1"
+                  "$ref": "#/components/schemas/ErrorPaymentResponse"
                 }
               }
             }
-          },
-          "422": {
-            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
-          },
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
           }
         },
+        "tags": [
+          "Payments"
+        ],
+        "description": "Create a payment request",
+        "security": [
+          {
+            "API_Key": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -101,12 +645,11 @@
             }
           }
         },
-        "tags": [
-          "api_v1"
-        ],
-        "security": [
+        "x-codeSamples": [
           {
-            "ApiKeyAuth": []
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl --location --request POST 'https://demo.shkeeper.io/api/v1/ETH/payment_request' \\\n--header 'X-Shkeeper-API-Key: YOUR_API_KEY' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\"external_id\":107,\"fiat\":\"USD\",\"amount\":\"18.25\",\"callback_url\":\"https://my-billing/callback.php\"}'\n"
           }
         ]
       },
@@ -125,8 +668,11 @@
     "/api/v1/{crypto_name}/quote": {
       "post": {
         "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
           "200": {
-            "description": "OK",
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
@@ -136,7 +682,7 @@
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -144,16 +690,20 @@
                 }
               }
             }
-          },
-          "422": {
-            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
-          },
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
           }
         },
+        "summary": "Return a fiat->crypto quote for the given crypto.",
+        "tags": [
+          "Cryptos"
+        ],
+        "description": "Create a quote",
+        "security": [
+          {
+            "API_Key": []
+          }
+        ],
         "requestBody": {
-          "required": true,
+          "required": false,
           "content": {
             "application/json": {
               "schema": {
@@ -162,13 +712,11 @@
             }
           }
         },
-        "summary": "Return a fiat->crypto quote for the given crypto.",
-        "tags": [
-          "api_v1"
-        ],
-        "security": [
+        "x-codeSamples": [
           {
-            "ApiKeyAuth": []
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl --location --request POST 'https://demo.shkeeper.io/api/v1/ETH/quote' \\\n--header 'X-Shkeeper-API-Key: YOUR_API_KEY' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\"fiat\":\"USD\",\"amount\":\"100.00\"}'\n"
           }
         ]
       },
@@ -187,16 +735,6 @@
     "/api/v1/{crypto_name}/payment-gateway": {
       "get": {
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GatewayStatusResponse"
-                }
-              }
-            }
-          },
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
           }
@@ -204,11 +742,6 @@
         "summary": "Get current payment gateway status and token.",
         "tags": [
           "api_v1"
-        ],
-        "security": [
-          {
-            "BasicAuth": []
-          }
         ]
       },
       "parameters": [
@@ -224,82 +757,26 @@
       ],
       "post": {
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Success"
-                }
-              }
-            }
-          },
-          "422": {
-            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
-          },
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GatewaySetRequest"
-              }
-            }
           }
         },
         "summary": "Enable/disable payment gateway.",
         "tags": [
           "api_v1"
-        ],
-        "security": [
-          {
-            "BasicAuth": []
-          }
         ]
       }
     },
     "/api/v1/{crypto_name}/payment-gateway/token": {
       "post": {
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Success"
-                }
-              }
-            }
-          },
-          "422": {
-            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
-          },
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GatewayTokenRequest"
-              }
-            }
           }
         },
         "summary": "Set shared API token for all cryptos.",
         "tags": [
           "api_v1"
-        ],
-        "security": [
-          {
-            "BasicAuth": []
-          }
         ]
       },
       "parameters": [
@@ -317,41 +794,13 @@
     "/api/v1/{crypto_name}/transaction": {
       "post": {
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TransactionResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
-          },
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TransactionRequest"
-              }
-            }
           }
         },
         "summary": "Add a transaction manually.",
         "tags": [
           "api_v1"
-        ],
-        "security": [
-          {
-            "BasicAuth": []
-          }
         ]
       },
       "parameters": [
@@ -369,41 +818,13 @@
     "/api/v1/{crypto_name}/payout_destinations": {
       "post": {
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PayoutDestinationListResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
-          },
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PayoutDestinationRequest"
-              }
-            }
           }
         },
         "summary": "Manage payout destinations (add/delete/list).",
         "tags": [
           "api_v1"
-        ],
-        "security": [
-          {
-            "BasicAuth": []
-          }
         ]
       },
       "parameters": [
@@ -421,41 +842,13 @@
     "/api/v1/{crypto_name}/autopayout": {
       "post": {
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Success"
-                }
-              }
-            }
-          },
-          "422": {
-            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
-          },
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AutoPayoutRequest"
-              }
-            }
           }
         },
         "summary": "Configure auto payout policy for a crypto wallet.",
         "tags": [
           "api_v1"
-        ],
-        "security": [
-          {
-            "BasicAuth": []
-          }
         ]
       },
       "parameters": [
@@ -473,16 +866,6 @@
     "/api/v1/{crypto_name}/status": {
       "get": {
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StatusResponse"
-                }
-              }
-            }
-          },
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
           }
@@ -490,10 +873,139 @@
         "summary": "Return wallet status and on-chain sync state.",
         "tags": [
           "api_v1"
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "crypto_name",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      ]
+    },
+    "/api/v1/{crypto_name}/balance": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
+          "200": {
+            "description": "Success \u2013 balance retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error \u2013 crypto not enabled or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error1"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Cryptos"
         ],
+        "description": "Retrieve balance information for a specific crypto, including amount in crypto, fiat, and server status.",
         "security": [
           {
-            "BasicAuth": []
+            "API_Key": []
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl --location --request GET 'https://demo.shkeeper.io/api/v1/ETH/balance' \\\n--header 'X-Shkeeper-Api-Key: YOUR_API_KEY'\n"
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "crypto_name",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      ]
+    },
+    "/api/v1/{crypto_name}/payout/status": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
+          "200": {
+            "description": "Payout status retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayoutStatusResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing external_id parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayoutStatusError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payout not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayoutStatusError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Payouts"
+        ],
+        "description": "Retrieve payout status by external_id for the specified cryptocurrency.",
+        "security": [
+          {
+            "API_Key": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "external_id",
+            "in": "query",
+            "required": true,
+            "description": "External ID assigned to the payout",
+            "schema": {
+              "type": "string",
+              "example": "abc123"
+            }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl --location --request GET 'https://demo.shkeeper.io/api/v1/BTC/payout/status?external_id=abc123' \\\n--header 'X-Shkeeper-API-Key: YOUR_API_KEY'\n"
           }
         ]
       },
@@ -512,8 +1024,21 @@
     "/api/v1/{crypto_name}/payout": {
       "post": {
         "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
+          "200": {
+            "description": "Payout task successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayoutResponse"
+                }
+              }
+            }
+          },
           "400": {
-            "description": "Bad Request",
+            "description": "Error creating payout",
             "content": {
               "application/json": {
                 "schema": {
@@ -521,14 +1046,21 @@
                 }
               }
             }
-          },
-          "422": {
-            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
-          },
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
           }
         },
+        "summary": "Make a single payout.",
+        "tags": [
+          "Payouts"
+        ],
+        "description": "Create a single payout for the specified crypto.",
+        "security": [
+          {
+            "Basic_Optional": []
+          },
+          {
+            "Basic": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -539,13 +1071,11 @@
             }
           }
         },
-        "summary": "Make a single payout.",
-        "tags": [
-          "api_v1"
-        ],
-        "security": [
+        "x-codeSamples": [
           {
-            "BasicAuth": []
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl --location --request POST 'https://demo.shkeeper.io/api/v1/BTC/payout' \\\n--header 'Authorization: Basic YOUR_BASIC_AUTH' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\"amount\":100,\"destination\":\"0x123...\",\"fee\":\"10\"}'\n"
           }
         ]
       },
@@ -564,49 +1094,77 @@
     "/api/v1/payoutnotify/{crypto_name}": {
       "post": {
         "responses": {
-          "200": {
-            "description": "OK",
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
+          "202": {
+            "description": "Callback accepted",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Success"
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "accepted"
+                    }
+                  }
                 }
               }
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Bad request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error1"
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
+          "500": {
+            "description": "Internal server error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BackendKeyError"
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
-          },
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
           }
         },
         "summary": "Receive payout completion notifications from backend wallet services.",
         "tags": [
-          "api_v1"
+          "Notifications"
         ],
-        "security": [
-          {
-            "BackendKey": []
+        "description": "SHKeeper sends a callback notification after a payout is completed.\n\nIf `enable_payout_callback` is enabled, the callback will be sent automatically.\nIf a `callback_url` was provided during payout creation, SHKeeper will send the notification to that URL.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayoutCallback"
+              }
+            }
           }
-        ]
+        }
       },
       "parameters": [
         {
@@ -623,49 +1181,77 @@
     "/api/v1/walletnotify/{crypto_name}/{txid}": {
       "get": {
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Success"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BackendKeyError"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error1"
-                }
-              }
-            }
-          },
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
+          "202": {
+            "description": "Callback accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "accepted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "summary": "Receive on-chain tx notifications from backend wallet services.",
         "tags": [
-          "api_v1"
+          "Notifications"
         ],
-        "security": [
-          {
-            "BackendKey": []
+        "description": "SHKeeper sends payment notifications for invoice-related transactions.\n\nEach transaction is sent individually, and the transaction that triggered the callback has `trigger = true`.\nYour server should respond with HTTP 202 if successfully processed.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentCallback"
+              }
+            }
           }
-        ]
+        }
       },
       "parameters": [
         {
@@ -691,36 +1277,6 @@
     "/api/v1/{crypto_name}/decrypt": {
       "get": {
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DecryptResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BackendKeyError"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error1"
-                }
-              }
-            }
-          },
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
           }
@@ -728,11 +1284,6 @@
         "summary": "Return wallet encryption state (used by backend services).",
         "tags": [
           "api_v1"
-        ],
-        "security": [
-          {
-            "BackendKey": []
-          }
         ]
       },
       "parameters": [
@@ -750,16 +1301,6 @@
     "/api/v1/{crypto_name}/server": {
       "get": {
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServerDetailsResponse"
-                }
-              }
-            }
-          },
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
           }
@@ -767,11 +1308,6 @@
         "summary": "Return RPC server credentials and host.",
         "tags": [
           "api_v1"
-        ],
-        "security": [
-          {
-            "BasicAuth": []
-          }
         ]
       },
       "parameters": [
@@ -789,16 +1325,6 @@
     "/api/v1/{crypto_name}/server/key": {
       "post": {
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error1"
-                }
-              }
-            }
-          },
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
           }
@@ -806,11 +1332,6 @@
         "summary": "Not implemented yet (placeholder).",
         "tags": [
           "api_v1"
-        ],
-        "security": [
-          {
-            "BasicAuth": []
-          }
         ]
       },
       "parameters": [
@@ -828,16 +1349,6 @@
     "/api/v1/{crypto_name}/server/host": {
       "post": {
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error1"
-                }
-              }
-            }
-          },
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
           }
@@ -845,11 +1356,6 @@
         "summary": "Not implemented yet (placeholder).",
         "tags": [
           "api_v1"
-        ],
-        "security": [
-          {
-            "BasicAuth": []
-          }
         ]
       },
       "parameters": [
@@ -874,11 +1380,6 @@
         "summary": "Return a wallet backup (either file content or streamed binary from a remote URL).",
         "tags": [
           "api_v1"
-        ],
-        "security": [
-          {
-            "BasicAuth": []
-          }
         ]
       },
       "parameters": [
@@ -896,41 +1397,13 @@
     "/api/v1/{crypto_name}/exchange-rate": {
       "post": {
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Success"
-                }
-              }
-            }
-          },
-          "422": {
-            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
-          },
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ExchangeRateSetRequest"
-              }
-            }
           }
         },
         "summary": "Update exchange rate source/values for a crypto/fiat pair.",
         "tags": [
           "api_v1"
-        ],
-        "security": [
-          {
-            "BasicAuth": []
-          }
         ]
       },
       "parameters": [
@@ -955,17 +1428,12 @@
         "summary": "Estimate transaction fee for a given amount (optionally address via query).",
         "tags": [
           "api_v1"
-        ],
-        "security": [
-          {
-            "BasicAuth": []
-          }
         ]
       },
       "parameters": [
         {
           "in": "path",
-          "name": "crypto_name",
+          "name": "amount",
           "required": true,
           "schema": {
             "type": "string",
@@ -974,7 +1442,7 @@
         },
         {
           "in": "path",
-          "name": "amount",
+          "name": "crypto_name",
           "required": true,
           "schema": {
             "type": "string",
@@ -988,15 +1456,46 @@
         "responses": {
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
+          "200": {
+            "description": "Task status (PENDING, SUCCESS, or FAILURE)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error1"
+                }
+              }
+            }
           }
         },
         "summary": "Get task/job details by id from crypto backend.",
         "tags": [
-          "api_v1"
+          "Other"
         ],
+        "description": "Check the status of a multi-payout task for the specified crypto.",
         "security": [
           {
-            "BasicAuth": []
+            "Basic_Optional": []
+          },
+          {
+            "Basic": []
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl --location --request GET 'https://demo.shkeeper.io/api/v1/ETH-USDC/task/7028c45b-0c88-483e-b703-dd455a361b2e' \\\n--header 'Authorization: Basic YOUR_BASE64_CREDENTIALS'\n"
           }
         ]
       },
@@ -1024,8 +1523,21 @@
     "/api/v1/{crypto_name}/multipayout": {
       "post": {
         "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MultipayoutResponse"
+                }
+              }
+            }
+          },
           "400": {
-            "description": "Bad Request",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1033,31 +1545,33 @@
                 }
               }
             }
-          },
-          "422": {
-            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
-          },
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
           }
         },
+        "summary": "Execute multi-payout with provided list of destinations and amounts.",
+        "tags": [
+          "Payouts"
+        ],
+        "description": "Execute a multi-payout for the specified crypto.",
+        "security": [
+          {
+            "Basic_Optional": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TestCallback"
+                "$ref": "#/components/schemas/MultipayoutItem"
               }
             }
           }
         },
-        "summary": "Execute multi-payout with provided list of destinations and amounts.",
-        "tags": [
-          "api_v1"
-        ],
-        "security": [
+        "x-codeSamples": [
           {
-            "BasicAuth": []
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl --location --request POST 'https://demo.shkeeper.io/api/v1/ETH-USDT/multipayout' \\\n--header 'Authorization: Basic YOUR_BASE64_CREDENTIALS' \\\n--header 'Content-Type: application/json' \\\n--data-raw '[{\"dest\":\"0xE77895BAda700d663f033510f73f1E988CF55756\",\"amount\":\"100\",\"external_id\":\"43234\",\"callback_url\":\"https://my.payout.com/notification\"},{\"dest\":\"0x7C4C7D3010d31329dd8244617C46e460E5EF8a6F\",\"amount\":\"200.11\",\"external_id\":\"43235\",\"callback_url\":\"https://my.payout.com/notification\"}]'\n"
           }
         ]
       },
@@ -1076,8 +1590,11 @@
     "/api/v1/{crypto_name}/addresses": {
       "get": {
         "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
           "200": {
-            "description": "OK",
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
@@ -1087,7 +1604,7 @@
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1095,18 +1612,23 @@
                 }
               }
             }
-          },
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
           }
         },
         "summary": "List all known wallet addresses for a crypto.",
         "tags": [
-          "api_v1"
+          "Transactions"
         ],
+        "description": "Retrieve all known wallet addresses for the specified crypto.",
         "security": [
           {
-            "ApiKeyAuth": []
+            "API_Key": []
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl --location --request GET 'https://demo.shkeeper.io/api/v1/ETH-USDC/addresses' \\\n--header 'X-Shkeeper-Api-Key: YOUR_API_KEY'\n"
           }
         ]
       },
@@ -1125,18 +1647,21 @@
     "/api/v1/transactions/{crypto}/{addr}": {
       "get": {
         "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
           "200": {
-            "description": "OK",
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionsListResponse"
+                  "$ref": "#/components/schemas/RetrieveTransactionsResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1144,25 +1669,30 @@
                 }
               }
             }
-          },
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
           }
         },
         "summary": "List transactions (confirmed + unconfirmed), optionally filtered by crypto/address.",
         "tags": [
-          "api_v1"
+          "Transactions"
         ],
+        "description": "Retrieve transactions for a given crypto and address. If none provided, returns all transactions.",
         "security": [
           {
-            "ApiKeyAuth": []
+            "API_Key": []
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl --location --request GET 'https://demo.shkeeper.io/api/v1/transactions/ETH/0xDCA83F12D963c7233E939a32e31aD758C7cCF307' \\\n--header 'X-Shkeeper-API-Key: YOUR_API_KEY'\n"
           }
         ]
       },
       "parameters": [
         {
           "in": "path",
-          "name": "crypto",
+          "name": "addr",
           "required": true,
           "schema": {
             "type": "string",
@@ -1171,7 +1701,7 @@
         },
         {
           "in": "path",
-          "name": "addr",
+          "name": "crypto",
           "required": true,
           "schema": {
             "type": "string",
@@ -1183,18 +1713,21 @@
     "/api/v1/transactions": {
       "get": {
         "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
           "200": {
-            "description": "OK",
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionsListResponse"
+                  "$ref": "#/components/schemas/RetrieveTransactionsResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1202,18 +1735,23 @@
                 }
               }
             }
-          },
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
           }
         },
         "summary": "List transactions (confirmed + unconfirmed), optionally filtered by crypto/address.",
         "tags": [
-          "api_v1"
+          "Transactions"
         ],
+        "description": "Retrieve transactions for a given crypto and address. If none provided, returns all transactions.",
         "security": [
           {
-            "ApiKeyAuth": []
+            "API_Key": []
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl --location --request GET 'https://demo.shkeeper.io/api/v1/transactions/ETH/0xDCA83F12D963c7233E939a32e31aD758C7cCF307' \\\n--header 'X-Shkeeper-API-Key: YOUR_API_KEY'\n"
           }
         ]
       }
@@ -1221,8 +1759,11 @@
     "/api/v1/invoices/{external_id}": {
       "get": {
         "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
           "200": {
-            "description": "OK",
+            "description": "List of invoices",
             "content": {
               "application/json": {
                 "schema": {
@@ -1232,7 +1773,7 @@
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Error occurred",
             "content": {
               "application/json": {
                 "schema": {
@@ -1240,18 +1781,23 @@
                 }
               }
             }
-          },
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
           }
         },
         "summary": "List invoices, optionally filtered by external_id (excluding OUTGOING).",
         "tags": [
-          "api_v1"
+          "Invoices"
         ],
+        "description": "Retrieve invoices. Optionally filter by external_id. Excludes invoices with status 'OUTGOING'.",
         "security": [
           {
-            "ApiKeyAuth": []
+            "API_Key": []
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl --location --request GET 'https://demo.shkeeper.io/api/v1/invoices/107' \\\n--header 'X-Shkeeper-API-Key: YOUR_API_KEY'\n"
           }
         ]
       },
@@ -1270,8 +1816,11 @@
     "/api/v1/invoices": {
       "get": {
         "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
           "200": {
-            "description": "OK",
+            "description": "List of invoices",
             "content": {
               "application/json": {
                 "schema": {
@@ -1281,7 +1830,7 @@
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Error occurred",
             "content": {
               "application/json": {
                 "schema": {
@@ -1289,18 +1838,23 @@
                 }
               }
             }
-          },
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
           }
         },
         "summary": "List invoices, optionally filtered by external_id (excluding OUTGOING).",
         "tags": [
-          "api_v1"
+          "Invoices"
         ],
+        "description": "Retrieve invoices. Optionally filter by external_id. Excludes invoices with status 'OUTGOING'.",
         "security": [
           {
-            "ApiKeyAuth": []
+            "API_Key": []
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl --location --request GET 'https://demo.shkeeper.io/api/v1/invoices/107' \\\n--header 'X-Shkeeper-API-Key: YOUR_API_KEY'\n"
           }
         ]
       }
@@ -1308,26 +1862,6 @@
     "/api/v1/{crypto_name}/payouts": {
       "get": {
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PayoutsCheckResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error1"
-                }
-              }
-            }
-          },
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
           }
@@ -1335,11 +1869,6 @@
         "summary": "Check if payouts exist for the provided amount (query param).",
         "tags": [
           "api_v1"
-        ],
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
         ]
       },
       "parameters": [
@@ -1357,8 +1886,11 @@
     "/api/v1/tx-info/{txid}/{external_id}": {
       "get": {
         "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
           "200": {
-            "description": "OK",
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
@@ -1368,7 +1900,7 @@
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1376,25 +1908,30 @@
                 }
               }
             }
-          },
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
           }
         },
         "summary": "Return lightweight info for a txid bound to an external invoice id.",
         "tags": [
-          "api_v1"
+          "Transactions"
         ],
+        "description": "Retrieve transaction info by txid and external_id.",
         "security": [
           {
-            "ApiKeyAuth": []
+            "API_Key": []
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl --location --request GET 'https://demo.shkeeper.io/api/v1/tx-info/0xbcf68720db79454f40b2acf6bfb18897d497ab4d8bc9faf243c859d14d5d6b66/240' \\\n--header 'X-Shkeeper-API-Key: YOUR_API_KEY'\n"
           }
         ]
       },
       "parameters": [
         {
           "in": "path",
-          "name": "external_id",
+          "name": "txid",
           "required": true,
           "schema": {
             "type": "string",
@@ -1403,7 +1940,7 @@
         },
         {
           "in": "path",
-          "name": "txid",
+          "name": "external_id",
           "required": true,
           "schema": {
             "type": "string",
@@ -1415,50 +1952,55 @@
     "/api/v1/decryption-key": {
       "post": {
         "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          },
           "200": {
-            "description": "OK",
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Success"
+                  "$ref": "#/components/schemas/DecryptionKeySuccess"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error1"
+                  "$ref": "#/components/schemas/DecryptionKeyError"
                 }
-              }
-            }
-          },
-          "422": {
-            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
-          },
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "$ref": "#/components/schemas/DecryptionKeyForm"
               }
             }
           }
         },
         "summary": "Submit the decryption key when wallet encryption is enabled.",
         "tags": [
-          "api_v1"
+          "Encryption"
         ],
+        "description": "Create an encryption key (enter a decryption key via API).",
         "security": [
           {
-            "ApiKeyAuth": []
+            "API_Key": []
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/DecryptionKeyForm"
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "label": "CLI",
+            "source": "curl --location --request POST 'https://demo.shkeeper.io/api/v1/decryption-key' \\\n--header 'X-Shkeeper-API-Key: YOUR_API_KEY' \\\n--form 'key=asdfasfasgasgasgasgdeagweg'\n"
           }
         ]
       }
@@ -1466,54 +2008,16 @@
     "/api/v1/test-callback-receiver": {
       "post": {
         "responses": {
-          "202": {
-            "description": "Accepted",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Success"
-                }
-              }
-            }
-          },
-          "422": {
-            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
-          },
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
           }
         },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TestCallback"
-              }
-            }
-          }
-        },
         "tags": [
           "api_v1"
-        ],
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
         ]
       }
     }
   },
-  "info": {
-    "title": "SHKeeper API",
-    "version": "v1"
-  },
-  "tags": [
-    {
-      "name": "api_v1",
-      "description": "SHKeeper v1 endpoints"
-    }
-  ],
   "openapi": "3.0.3",
   "components": {
     "schemas": {
@@ -1567,101 +2071,194 @@
         },
         "additionalProperties": false
       },
+      "MetricsItem": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Metric name",
+            "example": "ethereum_fullnode_last_block"
+          },
+          "value": {
+            "type": "number",
+            "description": "Metric value",
+            "example": 6415394
+          },
+          "labels": {
+            "type": "object",
+            "description": "Optional labels for the metric",
+            "example": {
+              "version": "1.14.6"
+            },
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "MetricsResponse": {
+        "type": "object",
+        "properties": {
+          "metrics": {
+            "type": "array",
+            "description": "List of system and crypto metrics",
+            "items": {
+              "$ref": "#/components/schemas/MetricsItem"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
       "CryptoItem": {
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Crypto identifier used in API endpoints",
+            "example": "ETH"
           },
           "display_name": {
-            "type": "string"
+            "type": "string",
+            "description": "Human-readable crypto name",
+            "example": "Ethereum"
           }
         },
-        "required": [
-          "display_name",
-          "name"
-        ],
         "additionalProperties": false
       },
-      "CryptoListResponse": {
+      "GetCryptoResponse": {
         "type": "object",
         "properties": {
           "status": {
             "type": "string",
+            "description": "Response status",
             "example": "success"
           },
           "crypto": {
             "type": "array",
+            "description": "Legacy list of crypto identifiers (backward compatibility)",
+            "example": [
+              "BNB",
+              "BTC",
+              "ETH"
+            ],
             "items": {
               "type": "string"
             }
           },
           "crypto_list": {
             "type": "array",
+            "description": "Preferred list of available cryptocurrencies",
             "items": {
               "$ref": "#/components/schemas/CryptoItem"
             }
           }
         },
-        "required": [
-          "crypto",
-          "crypto_list",
-          "status"
-        ],
         "additionalProperties": false
       },
-      "GenerateAddressResponse": {
+      "BalanceItem": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Crypto symbol",
+            "example": "BTC"
+          },
+          "display_name": {
+            "type": "string",
+            "description": "Human-readable crypto name",
+            "example": "Bitcoin"
+          },
+          "amount_crypto": {
+            "type": "string",
+            "description": "Amount in crypto",
+            "example": "0.12345678"
+          },
+          "rate": {
+            "type": "string",
+            "description": "Current exchange rate to fiat",
+            "example": "70616.07"
+          },
+          "fiat": {
+            "type": "string",
+            "description": "Fiat currency",
+            "example": "USD"
+          },
+          "amount_fiat": {
+            "type": "string",
+            "description": "Amount in fiat currency",
+            "example": "8700.12"
+          },
+          "server_status": {
+            "type": "string",
+            "description": "Backend node/server status",
+            "example": "online"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BalancesResponse": {
         "type": "object",
         "properties": {
           "status": {
             "type": "string",
+            "description": "Response status",
             "example": "success"
           },
-          "addr": {
-            "type": "string"
+          "balances": {
+            "type": "array",
+            "description": "List of balances",
+            "items": {
+              "$ref": "#/components/schemas/BalanceItem"
+            }
           }
         },
-        "required": [
-          "addr",
-          "status"
-        ],
+        "additionalProperties": false
+      },
+      "BalancesError": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Response status",
+            "example": "error"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "No valid cryptos requested"
+          }
+        },
         "additionalProperties": false
       },
       "PaymentRequest": {
         "type": "object",
         "properties": {
+          "external_id": {
+            "type": "string",
+            "example": "order_123456",
+            "description": "External order ID in merchant system"
+          },
           "fiat": {
             "type": "string",
-            "default": null,
-            "nullable": true
+            "example": "USD",
+            "description": "Fiat currency code (ISO 4217)"
           },
           "amount": {
             "type": "string",
-            "default": null,
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Error1": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "example": "error"
+            "example": "100.00",
+            "description": "Order amount in fiat currency as string"
           },
-          "message": {
-            "type": "string"
-          },
-          "traceback": {
+          "callback_url": {
             "type": "string",
-            "default": null,
-            "nullable": true
+            "format": "url",
+            "example": "https://example.com/payment/callback",
+            "description": "URL that will receive payment status callbacks"
           }
         },
         "required": [
-          "message",
-          "status"
+          "amount",
+          "fiat"
         ],
         "additionalProperties": false
       },
@@ -1670,12 +2267,51 @@
         "properties": {
           "status": {
             "type": "string",
-            "example": "success"
+            "example": "success",
+            "description": "Payment processing status"
+          },
+          "amount": {
+            "type": "string",
+            "example": "0.01080125",
+            "description": "Payment amount as a string to preserve precision"
+          },
+          "exchange_rate": {
+            "type": "string",
+            "example": "3379.24",
+            "description": "Exchange rate at the time of payment"
+          },
+          "display_name": {
+            "type": "string",
+            "example": "Ethereum",
+            "description": "Human-readable cryptocurrency name"
+          },
+          "wallet": {
+            "type": "string",
+            "example": "0x8695f1a224e28adf362E6f8a8E695EDCc5D64960",
+            "description": "Destination wallet address"
+          },
+          "recalculate_after": {
+            "type": "integer",
+            "example": 0,
+            "description": "Seconds after which the exchange rate should be recalculated"
           }
         },
-        "required": [
-          "status"
-        ],
+        "additionalProperties": false
+      },
+      "ErrorPaymentResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error",
+            "description": "Error status"
+          },
+          "message": {
+            "type": "string",
+            "example": "BTC payment gateway is unavailable",
+            "description": "Human-readable error message"
+          }
+        },
         "additionalProperties": false
       },
       "QuoteRequest": {
@@ -1703,99 +2339,28 @@
             "type": "string",
             "example": "success"
           },
-          "fiat": {
-            "type": "string"
-          },
-          "amount_fiat": {
-            "type": "string"
-          },
-          "crypto": {
-            "type": "string"
-          },
-          "amount_crypto": {
+          "crypto_amount": {
             "type": "string"
           },
           "exchange_rate": {
             "type": "string"
           }
         },
-        "required": [
-          "amount_crypto",
-          "amount_fiat",
-          "crypto",
-          "exchange_rate",
-          "fiat",
-          "status"
-        ],
         "additionalProperties": false
       },
-      "GatewayStatusResponse": {
+      "Error1": {
         "type": "object",
         "properties": {
           "status": {
             "type": "string",
-            "example": "success"
+            "example": "error",
+            "description": "Request status"
           },
-          "enabled": {
-            "type": "boolean"
-          },
-          "token": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "enabled",
-          "status",
-          "token"
-        ],
-        "additionalProperties": false
-      },
-      "GatewaySetRequest": {
-        "type": "object",
-        "properties": {
-          "enabled": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "enabled"
-        ],
-        "additionalProperties": false
-      },
-      "Success": {
-        "type": "object",
-        "properties": {
-          "status": {
+          "message": {
             "type": "string",
-            "example": "success"
-          }
-        },
-        "required": [
-          "status"
-        ],
-        "additionalProperties": false
-      },
-      "GatewayTokenRequest": {
-        "type": "object",
-        "properties": {
-          "token": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "token"
-        ],
-        "additionalProperties": false
-      },
-      "TransactionRequest": {
-        "type": "object",
-        "properties": {
-          "txid": {
-            "type": "string",
-            "default": null,
-            "nullable": true
+            "description": "Error message"
           },
-          "amount": {
+          "traceback": {
             "type": "string",
             "default": null,
             "nullable": true
@@ -1803,158 +2368,126 @@
         },
         "additionalProperties": false
       },
-      "TransactionResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "example": "success"
-          },
-          "id": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "id",
-          "status"
-        ],
-        "additionalProperties": false
-      },
-      "PayoutDestinationRequest": {
-        "type": "object",
-        "properties": {
-          "action": {
-            "type": "string",
-            "example": "add"
-          },
-          "daddress": {
-            "type": "string",
-            "default": null,
-            "nullable": true
-          },
-          "comment": {
-            "type": "string",
-            "default": null,
-            "nullable": true
-          }
-        },
-        "required": [
-          "action"
-        ],
-        "additionalProperties": false
-      },
-      "PayoutDestinationListItem": {
-        "type": "object",
-        "properties": {
-          "addr": {
-            "type": "string"
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "required": [
-          "addr"
-        ],
-        "additionalProperties": false
-      },
-      "PayoutDestinationListResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "example": "success"
-          },
-          "payout_destinations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PayoutDestinationListItem"
-            }
-          }
-        },
-        "required": [
-          "status"
-        ],
-        "additionalProperties": false
-      },
-      "AutoPayoutRequest": {
-        "type": "object",
-        "properties": {
-          "policy": {
-            "type": "string"
-          },
-          "policyValue": {
-            "type": "string"
-          },
-          "policyStatus": {
-            "type": "boolean",
-            "default": true
-          },
-          "add": {
-            "type": "string",
-            "default": null,
-            "nullable": true
-          },
-          "fee": {
-            "type": "string",
-            "default": null,
-            "nullable": true
-          },
-          "partiallPaid": {
-            "type": "boolean"
-          },
-          "addedFee": {
-            "type": "boolean"
-          },
-          "confirationNum": {
-            "type": "integer"
-          },
-          "recalc": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "addedFee",
-          "confirationNum",
-          "partiallPaid",
-          "policy",
-          "policyValue",
-          "recalc"
-        ],
-        "additionalProperties": false
-      },
-      "StatusResponse": {
+      "BalanceResponse": {
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Crypto symbol",
+            "example": "ETH"
           },
-          "amount": {
-            "type": "string"
+          "display_name": {
+            "type": "string",
+            "description": "Human-readable crypto name",
+            "example": "Ethereum"
           },
-          "server": {
-            "type": "string"
+          "amount_crypto": {
+            "type": "string",
+            "description": "Balance in crypto units",
+            "example": "0.0213590094"
+          },
+          "rate": {
+            "type": "string",
+            "description": "Current exchange rate to fiat",
+            "example": "4158.44000000"
+          },
+          "fiat": {
+            "type": "string",
+            "description": "Fiat currency",
+            "example": "USD"
+          },
+          "amount_fiat": {
+            "type": "string",
+            "description": "Balance converted to fiat",
+            "example": "88.8201590493"
+          },
+          "server_status": {
+            "type": "string",
+            "description": "Current status of crypto server",
+            "example": "Synced"
           }
         },
-        "required": [
-          "amount",
-          "name",
-          "server"
-        ],
+        "additionalProperties": false
+      },
+      "PayoutStatusResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 114,
+            "description": "Internal payout ID"
+          },
+          "external_id": {
+            "type": "string",
+            "example": "abc123",
+            "description": "External payout ID provided by merchant"
+          },
+          "crypto": {
+            "type": "string",
+            "example": "BTC",
+            "description": "Cryptocurrency code"
+          },
+          "status": {
+            "type": "string",
+            "example": "SUCCESS",
+            "description": "Payout status: SUCCESS, IN_PROGRESS, FAIL"
+          },
+          "amount": {
+            "type": "string",
+            "example": "100.50",
+            "description": "Payout amount"
+          },
+          "destination": {
+            "type": "string",
+            "example": "0x1234567890abcdef...",
+            "description": "Destination address"
+          },
+          "txid": {
+            "type": "string",
+            "example": "0f999d988641395b38943d8a9c01581c19fcaa4dcdd4bb35f99e16510fdd10d6",
+            "description": "Blockchain transaction ID (null if not yet broadcasted)"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PayoutStatusError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Payout not found",
+            "description": "Error message"
+          }
+        },
         "additionalProperties": false
       },
       "PayoutRequest": {
         "type": "object",
         "properties": {
-          "destination": {
-            "type": "string"
-          },
           "amount": {
-            "type": "string"
+            "type": "string",
+            "description": "The amount to send",
+            "example": "107"
+          },
+          "destination": {
+            "type": "string",
+            "description": "Destination address",
+            "example": "0xBD26e3512ce84F315e90E3FE75907bfbB5bD0c44"
           },
           "fee": {
-            "type": "string"
+            "type": "string",
+            "description": "Transaction fee (sat/vByte for BTC, sat/Byte for LTC/DOGE, integer for XMR, ignored for others)",
+            "example": "10"
+          },
+          "callback_url": {
+            "type": "string",
+            "description": "Optional callback URL to receive payout notifications",
+            "example": "https://my.payout.com/notification"
+          },
+          "external_id": {
+            "type": "string",
+            "description": "Optional external order ID",
+            "example": "435345534"
           }
         },
         "required": [
@@ -1964,94 +2497,293 @@
         ],
         "additionalProperties": false
       },
-      "BackendKeyError": {
+      "PayoutResponse": {
         "type": "object",
         "properties": {
-          "status": {
+          "task_id": {
             "type": "string",
-            "example": "error"
+            "description": "ID of the payout task",
+            "example": "b2a01bb0-8abe-403b-a3fa-8124c84bcf23"
           },
-          "message": {
+          "external_id": {
             "type": "string",
-            "example": "No backend key provided"
+            "description": "Echoed external ID if provided",
+            "example": "435345534"
           }
         },
         "additionalProperties": false
       },
-      "DecryptResponse": {
+      "PayoutCallbackTransaction": {
         "type": "object",
         "properties": {
-          "persistent_status": {
-            "type": "string"
+          "payout_id": {
+            "type": "integer",
+            "description": "Internal payout ID",
+            "example": 14
           },
-          "runtime_status": {
-            "type": "string"
-          },
-          "key": {
+          "external_id": {
             "type": "string",
-            "nullable": true
+            "description": "External ID assigned to the payout",
+            "example": "435345534"
+          },
+          "tx_hash": {
+            "type": "string",
+            "description": "Blockchain transaction hash",
+            "example": "AF732D1D1254C97A77F4DD08553725E6ECC011CA6DCD12BC65FA1D8551E54E6D"
+          },
+          "status": {
+            "type": "string",
+            "description": "Payout status: SUCCESS, FAILURE, or IN_PROGRESS",
+            "example": "SUCCESS"
+          },
+          "amount": {
+            "type": "string",
+            "description": "Amount in cryptocurrency",
+            "example": "2.0000000000"
+          },
+          "crypto": {
+            "type": "string",
+            "description": "Cryptocurrency code",
+            "example": "XRP"
+          },
+          "amount_fiat": {
+            "type": "string",
+            "description": "Amount in fiat currency",
+            "example": "4.364200000000000000"
+          },
+          "currency_fiat": {
+            "type": "string",
+            "description": "Fiat currency code",
+            "example": "USD"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Timestamp of payout",
+            "example": "2024-11-27T13:49:22"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PayoutCallback": {
+        "type": "object",
+        "properties": {
+          "payouts": {
+            "type": "array",
+            "description": "List of completed payouts",
+            "items": {
+              "$ref": "#/components/schemas/PayoutCallbackTransaction"
+            }
           }
         },
         "required": [
-          "persistent_status",
-          "runtime_status"
+          "payouts"
         ],
         "additionalProperties": false
       },
-      "ServerDetailsResponse": {
+      "TransactionCallback": {
         "type": "object",
         "properties": {
+          "txid": {
+            "type": "string",
+            "description": "Blockchain transaction ID",
+            "example": "0x518a10b13a708fd11aa98db88c625dd45130db6656ba822600b01d0c53c85078"
+          },
+          "date": {
+            "type": "string",
+            "description": "Transaction date",
+            "example": "2024-06-25 15:45:38"
+          },
+          "amount_crypto": {
+            "type": "string",
+            "description": "Transaction amount in crypto",
+            "example": "7.80000000"
+          },
+          "amount_fiat": {
+            "type": "string",
+            "description": "Transaction amount in fiat",
+            "example": "7.80"
+          },
+          "trigger": {
+            "type": "boolean",
+            "description": "True if this transaction triggered the callback",
+            "example": true
+          },
+          "crypto": {
+            "type": "string",
+            "description": "Transaction cryptocurrency",
+            "example": "ETH-USDT"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PaymentCallback": {
+        "type": "object",
+        "properties": {
+          "external_id": {
+            "type": "string",
+            "description": "Invoice or order ID in external system",
+            "example": "147"
+          },
+          "crypto": {
+            "type": "string",
+            "description": "Cryptocurrency used",
+            "example": "ETH-USDT"
+          },
+          "addr": {
+            "type": "string",
+            "description": "Wallet address that received the payment",
+            "example": "0x6f2Fc9D7205B7D9037dDE45B5f9e12B18EA07e27"
+          },
+          "fiat": {
+            "type": "string",
+            "description": "Fiat currency used",
+            "example": "USD"
+          },
+          "balance_fiat": {
+            "type": "string",
+            "description": "Amount in fiat",
+            "example": "7.80"
+          },
+          "balance_crypto": {
+            "type": "string",
+            "description": "Amount in crypto",
+            "example": "7.80000000"
+          },
+          "paid": {
+            "type": "boolean",
+            "description": "True if fully paid",
+            "example": true
+          },
           "status": {
             "type": "string",
+            "description": "Invoice status: PARTIAL, PAID, OVERPAID",
+            "example": "PAID"
+          },
+          "transactions": {
+            "type": "array",
+            "description": "Transactions related to the payment request",
+            "items": {
+              "$ref": "#/components/schemas/TransactionCallback"
+            }
+          },
+          "fee_percent": {
+            "type": "string",
+            "description": "Fee percentage added to invoice",
+            "example": "2"
+          },
+          "overpaid_fiat": {
+            "type": "string",
+            "description": "Overpaid amount in fiat",
+            "example": "0.00"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaskResultItem": {
+        "type": "object",
+        "properties": {
+          "dest": {
+            "type": "string",
+            "description": "Destination address",
+            "example": "TGusXhweqkJ1aJftjmAfLqA1rfEWD4hSGZ"
+          },
+          "amount": {
+            "type": "string",
+            "description": "Amount sent",
+            "example": "100"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of payout item",
             "example": "success"
           },
-          "key": {
-            "type": "string",
-            "description": "user:password"
+          "txids": {
+            "type": "array",
+            "description": "Transaction IDs associated with this payout",
+            "example": [
+              "4c32969220743644e3480d96e95a423d351049ac6296b8315103225709881ae3",
+              "da2996bae7a8a4d655a1288f8f4c79ce0aa3640e61f8ae8de08ae9c70c72d90d"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaskResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "description": "Task results or null if pending",
+            "items": {
+              "$ref": "#/components/schemas/TaskResultItem"
+            },
+            "nullable": true
           },
-          "host": {
-            "type": "string"
+          "status": {
+            "type": "string",
+            "description": "Task status",
+            "example": "PENDING / SUCCESS / FAILURE"
           }
         },
         "required": [
-          "host",
-          "key",
           "status"
         ],
         "additionalProperties": false
       },
-      "ExchangeRateSetRequest": {
+      "MultipayoutItem": {
         "type": "object",
         "properties": {
-          "fiat": {
-            "type": "string"
-          },
-          "source": {
+          "dest": {
             "type": "string",
-            "example": "manual"
+            "description": "Destination address",
+            "example": "0xE77895BAda700d663f033510f73f1E988CF55756"
           },
-          "rate": {
+          "amount": {
             "type": "string",
-            "default": null,
-            "nullable": true
+            "description": "Amount to send",
+            "example": "100.0"
           },
-          "fee": {
-            "type": "string"
+          "external_id": {
+            "type": "string",
+            "description": "Optional external ID",
+            "example": "43234"
+          },
+          "callback_url": {
+            "type": "string",
+            "description": "Optional callback URL",
+            "example": "https://my.payout.com/notification"
+          },
+          "dest_tag": {
+            "type": "integer",
+            "description": "Optional XRP destination tag",
+            "example": 12345
           }
         },
         "required": [
-          "fee",
-          "fiat",
-          "source"
+          "amount",
+          "dest"
         ],
         "additionalProperties": false
       },
-      "TestCallback": {
+      "MultipayoutResponse": {
         "type": "object",
         "properties": {
-          "_": {
-            "default": null,
-            "nullable": true
+          "task_id": {
+            "type": "string",
+            "example": "0471adec-5de5-4668-bc1d-e8e7729cb676"
+          },
+          "external_ids": {
+            "type": "array",
+            "example": [
+              "43234",
+              "43235"
+            ],
+            "items": {
+              "type": "string"
+            }
           }
         },
         "additionalProperties": false
@@ -2061,37 +2793,129 @@
         "properties": {
           "status": {
             "type": "string",
+            "description": "Response status",
             "example": "success"
           },
           "addresses": {
             "type": "array",
+            "description": "List of wallet addresses for the given crypto",
+            "example": [
+              "0x0A71f4741DcaD3C06AA51eE6cF0E22675507d0d0",
+              "0x8695f1a224e28adf362E6f8a8E695EDCc5D64960"
+            ],
             "items": {
               "type": "string"
             }
           }
         },
-        "required": [
-          "addresses",
-          "status"
-        ],
         "additionalProperties": false
       },
-      "TransactionsListResponse": {
+      "Transaction": {
+        "type": "object",
+        "properties": {
+          "addr": {
+            "type": "string",
+            "description": "Cryptocurrency address",
+            "example": "0xDCA83F12D963c7233E939a32e31aD758C7cCF307"
+          },
+          "amount": {
+            "type": "string",
+            "description": "Transaction amount",
+            "example": "0.0001000000"
+          },
+          "crypto": {
+            "type": "string",
+            "description": "Cryptocurrency symbol",
+            "example": "ETH"
+          },
+          "status": {
+            "type": "string",
+            "description": "Transaction status",
+            "example": "CONFIRMED"
+          },
+          "txid": {
+            "type": "string",
+            "description": "Transaction ID",
+            "example": "0xbcf68720db79454f40b2acf6bfb18897d497ab4d8bc9faf243c859d14d5d6b66"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RetrieveTransactionsResponse": {
         "type": "object",
         "properties": {
           "status": {
             "type": "string",
-            "example": "success"
+            "example": "success",
+            "description": "Request status"
           },
           "transactions": {
             "type": "array",
-            "items": {}
+            "description": "List of transactions for the requested address",
+            "items": {
+              "$ref": "#/components/schemas/Transaction"
+            }
           }
         },
-        "required": [
-          "status",
-          "transactions"
-        ],
+        "additionalProperties": false
+      },
+      "InvoiceTransaction": {
+        "type": "object",
+        "properties": {
+          "txid": {
+            "type": "string",
+            "description": "Transaction ID"
+          },
+          "amount": {
+            "type": "string",
+            "description": "Transaction amount in crypto"
+          },
+          "crypto": {
+            "type": "string",
+            "description": "Crypto currency symbol"
+          },
+          "addr": {
+            "type": "string",
+            "description": "Crypto address"
+          },
+          "status": {
+            "type": "string",
+            "description": "Transaction status"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Invoice": {
+        "type": "object",
+        "properties": {
+          "external_id": {
+            "type": "string",
+            "description": "External invoice ID"
+          },
+          "fiat": {
+            "type": "string",
+            "description": "Fiat currency code, e.g., USD"
+          },
+          "amount_fiat": {
+            "type": "string",
+            "description": "Amount in fiat"
+          },
+          "balance_fiat": {
+            "type": "string",
+            "description": "Balance in fiat"
+          },
+          "status": {
+            "type": "string",
+            "description": "Invoice status, e.g., UNPAID"
+          },
+          "txs": {
+            "type": "array",
+            "description": "Transactions linked to this invoice",
+            "items": {
+              "$ref": "#/components/schemas/InvoiceTransaction"
+            }
+          }
+        },
         "additionalProperties": false
       },
       "InvoicesListResponse": {
@@ -2103,7 +2927,10 @@
           },
           "invoices": {
             "type": "array",
-            "items": {}
+            "description": "List of invoices",
+            "items": {
+              "$ref": "#/components/schemas/Invoice"
+            }
           }
         },
         "required": [
@@ -2112,16 +2939,29 @@
         ],
         "additionalProperties": false
       },
-      "PayoutsCheckResponse": {
+      "TxInfo": {
         "type": "object",
         "properties": {
-          "status": {
+          "addr": {
             "type": "string",
-            "example": "success"
+            "description": "Transaction address",
+            "example": "0xDCA83F12D963c7233E939a32e31aD758C7cCF307"
+          },
+          "amount": {
+            "type": "string",
+            "description": "Transaction amount",
+            "example": "0.295503"
+          },
+          "crypto": {
+            "type": "string",
+            "description": "Cryptocurrency code",
+            "example": "ETH"
           }
         },
         "required": [
-          "status"
+          "addr",
+          "amount",
+          "crypto"
         ],
         "additionalProperties": false
       },
@@ -2133,25 +2973,62 @@
             "example": "success"
           },
           "info": {
-            "type": "object",
-            "additionalProperties": {}
+            "description": "Transaction info. Empty object if transaction not found.",
+            "example": {
+              "addr": "0xDCA83F12D963c7233E939a32e31aD758C7cCF307",
+              "amount": "0.295503",
+              "crypto": "ETH"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TxInfo"
+              }
+            ]
           }
         },
-        "required": [
-          "status"
-        ],
         "additionalProperties": false
       },
       "DecryptionKeyForm": {
         "type": "object",
         "properties": {
           "key": {
-            "type": "string"
+            "type": "string",
+            "description": "The decryption key to unlock the wallet",
+            "example": "asdfasfasgasgasgasgdeagweg"
           }
         },
-        "required": [
-          "key"
-        ],
+        "additionalProperties": false
+      },
+      "DecryptionKeySuccess": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success",
+            "description": "Request status"
+          },
+          "message": {
+            "type": "string",
+            "example": "Decryption key was already entered",
+            "description": "Optional message if key was already submitted"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DecryptionKeyError": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error",
+            "description": "Request status"
+          },
+          "message": {
+            "type": "string",
+            "example": "Invalid decryption key",
+            "description": "Error message describing what went wrong"
+          }
+        },
         "additionalProperties": false
       }
     },
@@ -2165,16 +3042,29 @@
             }
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "API_Key": {
+        "type": "apiKey",
+        "description": "Send the API Key in the request header: `X-Shkeeper-Api-Key: {API Key}`. ",
+        "name": "X-Shkeeper-Api-Key",
+        "in": "header"
       },
-      "UNPROCESSABLE_ENTITY": {
-        "description": "Unprocessable Entity",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
-          }
-        }
+      "Basic": {
+        "type": "http",
+        "description": "Basic HTTP authentication: `Authorization: Basic {base64(username:password)}`.",
+        "scheme": "basic"
+      },
+      "Basic_Optional": {
+        "type": "http",
+        "description": "Optional Basic Auth: if `Authorization` header is provided, the user is attached to the request context (`g.user`). Otherwise, the request is treated as anonymous.",
+        "scheme": "basic"
+      },
+      "Basic_Metrics": {
+        "type": "http",
+        "description": "Basic HTTP authentication specifically for metrics endpoints. Checks credentials against environment variables `METRICS_USERNAME` and `METRICS_PASSWORD`. Defaults: username=`shkeeper`, password=`shkeeper`.",
+        "scheme": "basic"
       }
     }
   }

@@ -3,7 +3,25 @@
 title: Database Backend
 ---
 
-_Placeholder for **`deployment/database-backend`**._
+# 📦 Database Backend
 
-This page is a stub generated to satisfy the sidebar.
-Replace it with real content.
+## 🧠 Overview
+
+SHKeeper stores all **persistent application data** in a relational database. This includes:
+
+- Users, API keys, and roles  
+- Wallet configurations (coins, nodes, status)  
+- Invoices and payment statuses  
+- Transactions and blockchain receipts  
+- Payout tasks and callback logs  
+
+The database is central to the system: it ensures that payment history, invoice tracking, and wallet operations are consistent and recoverable. SHKeeper interacts with blockchain nodes externally, while all internal state is stored in the database.
+
+## 🗃️ Supported Databases
+
+SHKeeper currently supports two database engines:
+
+| Database Engine | Usage |
+|-----------------|-------|
+| **SQLite**      | Lightweight |
+| **MariaDB**     | Scalable deployments |

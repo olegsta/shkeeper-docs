@@ -1,0 +1,8 @@
+{
+  "label": "Errors",
+  "position": 11,
+  "link": {
+    "type": "generated-index",
+    "description": "Short description for typical errors and recomendations for fixing"
+  }
+}
