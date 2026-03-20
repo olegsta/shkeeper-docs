@@ -15,10 +15,10 @@ RUN npm install
 COPY . .
 
 # Remove any previous Docusaurus build folders
-RUN rm -rf .docusaurus build
+RUN npm run build
 
 # Expose port 3000 (default for Docusaurus dev server)
 EXPOSE 3000
 
 # Run Docusaurus in development mode, listening on all network interfaces
-CMD ["npm", "run", "start", "--", "--host", "0.0.0.0"]
+CMD ["npm", "run", "serve", "--", "--host", "0.0.0.0"]
