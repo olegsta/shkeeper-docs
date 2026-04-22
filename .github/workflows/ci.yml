@@ -4,35 +4,96 @@ on:
   push:
     tags:
       - "v*.*.*"
+
+  repository_dispatch:
+    types: [build-docs]
+
+permissions:
+  contents: write
+
 jobs:
   docker:
     runs-on: ubuntu-latest
+
     steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v3
-      -
-        name: Docker meta
+      # =========================
+      # CHECKOUT DOCS REPO
+      # =========================
+      - name: Checkout docs repo
+        uses: actions/checkout@v4
+
+      # =========================
+      # DETERMINE TAG
+      # =========================
+      - name: Resolve tag
+        run: |
+          echo "TAG=${{ github.event.client_payload.tag || github.ref_name }}" >> $GITHUB_ENV
+
+      # =========================
+      # DOWNLOAD OPENAPI FROM RELEASE
+      # =========================
+      - name: Download OpenAPI
+        run: |
+          mkdir -p static/openapi
+
+          curl -L \
+            https://github.com/olegsta/shkeeper.io/releases/download/${TAG}/openapi.json \
+            -o static/openapi/openapi.json
+
+      # =========================
+      # VERIFY OPENAPI
+      # =========================
+      - name: Verify OpenAPI
+        run: |
+          test -f static/openapi/openapi.json
+          python - << 'EOF'
+          import json
+          with open('static/openapi/openapi.json') as f:
+              data = json.load(f)
+          assert 'openapi' in data
+          assert 'info' in data
+          assert 'title' in data['info']
+          assert 'version' in data['info']
+
+          print("OpenAPI OK")
+          EOF
+
+      # =========================
+      # COMMIT OPENAPI TO DOCS REPO
+      # =========================
+      - name: Commit OpenAPI to repo
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add static/openapi/openapi.json
+          git commit -m "chore: update openapi for ${TAG} [skip ci]" || echo "no changes"
+          git push origin HEAD:main
+
+      # =========================
+      # DOCKER META
+      # =========================
+      - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
         with:
-          # don't set latest tag
-          flavor: |
-            latest=false
-          # list of Docker images to use as base name for tags
-          images: |
-            vsyshost/shkeeper-docs
-          # generate Docker tags based on the following events/attributes
+          images: olegprin/shkeeper-docs
           tags: |
-            type=semver,pattern={{version}}
-      -
-        name: Login to Docker Hub
+            type=ref,event=tag
+            type=raw,value=${{ env.TAG }}
+
+      # =========================
+      # LOGIN
+      # =========================
+      - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # =========================
+      # BUILD & PUSH
+      # =========================
+      - name: Build & push
         uses: docker/build-push-action@v4
         with:
           push: true
