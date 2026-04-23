@@ -21,6 +21,8 @@ jobs:
       # =========================
       - name: Checkout docs repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       # =========================
       # DETERMINE TAG
@@ -48,8 +50,10 @@ jobs:
           test -f static/openapi/openapi.json
           python - << 'EOF'
           import json
+
           with open('static/openapi/openapi.json') as f:
               data = json.load(f)
+
           assert 'openapi' in data
           assert 'info' in data
           assert 'title' in data['info']
@@ -65,9 +69,21 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
+
           git add static/openapi/openapi.json
+
           git commit -m "chore: update openapi for ${TAG} [skip ci]" || echo "no changes"
+
           git push origin HEAD:main
+
+      # =========================
+      # IMPORTANT: SYNC LATEST MAIN
+      # =========================
+      - name: Pull latest main after commit
+        run: |
+          git fetch origin main
+          git checkout main
+          git reset --hard origin/main
 
       # =========================
       # DOCKER META
@@ -96,5 +112,8 @@ jobs:
       - name: Build & push
         uses: docker/build-push-action@v4
         with:
+          context: .
           push: true
+          no-cache: true
+          pull: true
           tags: ${{ steps.meta.outputs.tags }}
