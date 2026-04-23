@@ -14,60 +14,24 @@ permissions:
 jobs:
   docker:
     runs-on: ubuntu-latest
-
     steps:
       # =========================
       # CHECKOUT DOCS REPO
       # =========================
       - name: Checkout docs repo
         uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
 
       # =========================
-      # DETERMINE TAG
+      # SYNC LATEST MAIN
       # =========================
-      - name: Resolve tag
+      - name: Sync main
         run: |
-          echo "TAG=${{ github.event.client_payload.tag || github.ref_name }}" >> $GITHUB_ENV
-
-      # =========================
-      # DOWNLOAD OPENAPI FROM RELEASE
-      # =========================
-      - name: Download OpenAPI
-        run: |
-          mkdir -p static/openapi
-
-          curl -L \
-            https://github.com/olegsta/shkeeper.io/releases/download/${TAG}/openapi.json \
-            -o static/openapi/openapi.json
-
-      # =========================
-      # VERIFY OPENAPI
-      # =========================
-      - name: Verify OpenAPI
-        run: |
-          test -f static/openapi/openapi.json
-          python - << 'EOF'
-          import json
-          with open('static/openapi/openapi.json') as f:
-              data = json.load(f)
-          assert 'openapi' in data
-          assert 'info' in data
-          assert 'title' in data['info']
-          assert 'version' in data['info']
-
-          print("OpenAPI OK")
-          EOF
-
-      # =========================
-      # COMMIT OPENAPI TO DOCS REPO
-      # =========================
-      - name: Commit OpenAPI to repo
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add static/openapi/openapi.json
-          git commit -m "chore: update openapi for ${TAG} [skip ci]" || echo "no changes"
-          git push origin HEAD:main
+          git fetch origin main
+          git checkout -B main origin/main
 
       # =========================
       # DOCKER META
@@ -78,8 +42,9 @@ jobs:
         with:
           images: olegprin/shkeeper-docs
           tags: |
-            type=ref,event=tag
-            type=raw,value=${{ env.TAG }}
+            type=semver,pattern={{version}},value=${{ env.TAG }}
+          flavor: |
+            latest=false
 
       # =========================
       # LOGIN
@@ -96,5 +61,8 @@ jobs:
       - name: Build & push
         uses: docker/build-push-action@v4
         with:
+          context: .
           push: true
+          no-cache: true
+          pull: true
           tags: ${{ steps.meta.outputs.tags }}
