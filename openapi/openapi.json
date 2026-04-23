@@ -1,6 +1,6 @@
 {
   "info": {
-    "description": "# Introduction\nSHKeeper - is an open-source, self-hosted cryptocurrency payment processor. It uniquely serves as both a gateway and a merchant, enabling you to accept payments in various cryptocurrencies without fees and intermediaries.\n\n# Authentication\nYou can authenticate either via Basic Auth or an API key depending from endpoint requirement. You can generate or view an API key in the SHKeeper UI under `Wallets` -> `Manage` -> `API key`. For metrics endpoints, use `METRICS_USERNAME` and `METRICS_PASSWORD`.\n\n<!-- Redoc-Inject: <security-definitions> -->\n",
+    "description": "# TEST",
     "contact": {
       "email": "support@shkeeper.io",
       "url": "https://shkeeper.io"
@@ -155,29 +155,6 @@
             "minLength": 1
           }
         },
-        {
-          "in": "path",
-          "name": "crypto_name",
-          "required": true,
-          "schema": {
-            "type": "string",
-            "minLength": 1
-          }
-        }
-      ]
-    },
-    "/{crypto_name}/get-rate": {
-      "get": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "wallet"
-        ]
-      },
-      "parameters": [
         {
           "in": "path",
           "name": "crypto_name",
